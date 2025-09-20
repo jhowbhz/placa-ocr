@@ -1,0 +1,115 @@
+{
+  "info": {
+    "name": "Placa OCR API",
+    "description": "Colecao para testar a API de deteccao de placas Mercosul.",
+    "version": "0.1.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Plates",
+      "item": [
+        {
+          "name": "Detect License Plates",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "",
+                  "description": "Arquivo de imagem com placa no padrao Mercosul."
+                },
+                {
+                  "key": "tipo",
+                  "type": "text",
+                  "value": "agregados-basica"
+                },
+                {
+                  "key": "homolog",
+                  "type": "text",
+                  "value": "true"
+                },
+                {
+                  "key": "placa_manual",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/plates/detect",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "plates",
+                "detect"
+              ]
+            },
+            "description": "Envia uma imagem e retorna as deteccoes normalizadas."
+          },
+          "response": [
+            {
+              "name": "Exemplo de resposta",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "src": ""
+                    },
+                    {
+                      "key": "tipo",
+                      "type": "text",
+                      "value": "agregados-basica"
+                    },
+                    {
+                      "key": "homolog",
+                      "type": "text",
+                      "value": "true"
+                    },
+                    {
+                      "key": "placa_manual",
+                      "type": "text",
+                      "value": ""
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/plates/detect",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "plates",
+                    "detect"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "body": "{\n  \"placa\": \"ABC1234\",\n  \"data\": [\n    {\n      \"resumo\": {\n        \"x_center\": 0.51,\n        \"y_center\": 0.63,\n        \"width\": 0.18,\n        \"height\": 0.07,\n        \"confidence\": 0.94\n      },\n      \"veiculo\": {\n        \"marca\": \"FORD\",\n        \"modelo\": \"KA 1.0\",\n        \"detalhes\": {\n          \"exemplo\": \"payload retornado pela API Brasil em modo homolog\"\n        }\n      }\n    }\n  ]\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000",
+      "type": "string"
+    }
+  ]
+}
