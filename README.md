@@ -3,12 +3,6 @@
 
 API FastAPI para deteccao de placas Mercosul. O repositorio inclui script de inicializacao completa (`init.sh`), utilitarios para subir a API (`start.sh`) e configuracoes prontas para treino utilizando o dataset **Artificial Mercosur License Plates** (CC BY 4.0).
 
-## 1. Visao geral
-
-- Framework principal: FastAPI (Python 3.10+)
-- Modelo de deteccao: YOLOv8 (Ultralytics)
-- Objetivo: detectar placas padrao Mercosul em imagens, retornando coordenadas normalizadas e confianca.
-
 ## 2. Requisitos
 
 - Python 3.10 ou superior (com `venv` habilitado)
@@ -16,20 +10,6 @@ API FastAPI para deteccao de placas Mercosul. O repositorio inclui script de ini
 - `curl` ou `wget` para baixar o dataset
 - Espaco em disco: ~6 GB (dataset compactado + imagens extraidas + artefatos de treino)
 - GPU opcional (CUDA) para treinos mais rapidos
-
-## 3. Estrutura do projeto
-
-```
-.
-|-- app/                  # Codigo FastAPI (routers, services, schemas)
-|-- artifacts/            # Pesos YOLO gerados pelo treino (criado pelo init)
-|-- data/                 # Dataset preparado para YOLO (criado pelo init)
-|-- docs/postman.json     # Colecao Postman para testar a API
-|-- init.sh               # Setup completo: dependencias, dataset, treino inicial
-|-- start.sh              # Wrapper para executar a API em dev/prod
-|-- requirements.txt
-`-- .env-example
-```
 
 ## 4. Configuracao de ambiente
 
@@ -46,12 +26,12 @@ API FastAPI para deteccao de placas Mercosul. O repositorio inclui script de ini
 | `PLACAOCR_DEVICE` | Dispositivo (`cpu`, `cuda:0`, etc.) | `cpu` |
 | `PLACAOCR_IMAGE_SIZE` | Tamanho de imagem usado na inferencia (None = default do modelo) | `640` |
 
-**Integração API Brasil (opcional):**
+**Integração APIBrasil (opcional):**
 
 | Variavel | Descricao | Padrao |
 | --- | --- | --- |
 | `PLACAOCR_APIBRASIL_BASE_URL` | Endpoint do recurso de consulta | `https://gateway.apibrasil.io/api/v2/vehicles/base/001/consulta` |
-| `PLACAOCR_APIBRASIL_TOKEN` | Token/Bearer utilizado pela API Brasil | *(vazio)* |
+| `PLACAOCR_APIBRASIL_TOKEN` | Token/Bearer utilizado pela APIBrasil | *(vazio)* |
 | `PLACAOCR_APIBRASIL_TIMEOUT` | Timeout da chamada em segundos | `15` |
 
 ## 5. Instalar dependencias e preparar dataset
@@ -105,7 +85,7 @@ Por padrao o servidor sobe em `http://0.0.0.0:8000`. A documentacao Swagger fica
 - Na requisicao `Detect License Plates` envie:
   - campo `file` com a imagem (`multipart/form-data`),
   - campo `tipo` (ex.: `agregados-basica`),
-  - campo `homolog` (`true` para modo sandbox da API Brasil),
+  - campo `homolog` (`true` para modo sandbox da APIBrasil),
   - opcional `placa_manual` caso queira forcar a placa utilizada na consulta externa.
 
 Resposta esperada:
@@ -126,7 +106,7 @@ Resposta esperada:
         "marca": "FORD",
         "modelo": "KA 1.0",
         "detalhes": {
-          "exemplo": "payload retornado pela API Brasil em modo homolog"
+          "exemplo": "payload retornado pela APIBrasil em modo homolog"
         }
       }
     }
@@ -134,23 +114,9 @@ Resposta esperada:
 }
 ```
 
-## 8. Integracao com API Brasil
+## 8. Integracao com APIBrasil
 
 - Configure `PLACAOCR_APIBRASIL_TOKEN` (e demais variaveis) para habilitar a chamada.
 - A API envia `tipo`, `placa` (derivada da imagem ou do campo `placa_manual`) e `homolog`.
 - Se `homolog=true` e nenhuma placa for detectada, o sistema utiliza `ABC1234` para recuperar o payload de exemplo.
-- O retorno completo da API Brasil e anexado em `data[].veiculo.detalhes`.
-
-## 9. Desenvolvimento
-
-- Utilize `./start.sh --dev` durante o desenvolvimento; o script carrega variaveis de `ENV_FILE` (padrao `.env`).
-- Ajuste o codigo em `app/api/routes.py` e `app/services/detector.py` conforme necessario.
-- Para atualizar dependencias, edite `requirements.txt` e rode novamente o `init.sh` ou `pip install -r requirements.txt` dentro do virtualenv.
-
-## 10. Proximos passos sugeridos
-
-- Implementar OCR real para extrair a placa a partir dos recortes retornados pelo detector.
-- Executar treinos mais longos (maior `TRAIN_EPOCHS`) e avaliar metricas em `artifacts/runs/`.
-- Adicionar testes automatizados para validar o servico de inferencia.
-- Incluir monitoramento/logging e pipeline de deploy.
-- Criar workflow CI/CD para validar lint/testes automaticamente.
+- O retorno completo da APIBrasil e anexado em `data[].veiculo.detalhes`.
