@@ -1,76 +1,90 @@
-﻿# Placa OCR API
-<img width="1624" height="868" alt="{C9194544-F3E1-4EB8-8FF6-EA1AA7A85BF3}" src="https://github.com/user-attachments/assets/26f36790-f47b-4417-97e4-097f4ef3cbcd" />
+﻿Aqui está um novo README em **Markdown**, reorganizado e formatado para facilitar leitura e integração:
 
-API FastAPI para deteccao de placas Mercosul. O repositorio inclui script de inicializacao completa (`init.sh`), utilitarios para subir a API (`start.sh`) e configuracoes prontas para treino utilizando o dataset **Artificial Mercosur License Plates** (CC BY 4.0).
+````markdown
+# 📷 Placa OCR API
 
-## 1. Configuracao de ambiente
+API para **detecção e OCR de placas Mercosul**, com suporte opcional de integração à **APIBrasil**.
 
-1. Copie o exemplo de variaveis:
+---
+
+## ⚙️ 1. Configuração de Ambiente
+
+1. Copie o arquivo de exemplo:
    ```bash
    cp .env-example .env
-   ```
-2. Ajuste `PLACAOCR_MODEL_PATH` para apontar para o peso YOLO desejado quando disponivel.
+````
 
-| Variavel | Descricao | Padrao |
-| --- | --- | --- |
-| `PLACAOCR_MODEL_PATH` | Caminho para o peso YOLO (`.pt`) utilizado na inferencia | `artifacts/license-plate.pt` |
-| `PLACAOCR_CONFIDENCE_THRESHOLD` | Confianca minima para retornar deteccoes | `0.25` |
-| `PLACAOCR_DEVICE` | Dispositivo (`cpu`, `cuda:0`, etc.) | `cpu` |
-| `PLACAOCR_IMAGE_SIZE` | Tamanho de imagem usado na inferencia (None = default do modelo) | `640` |
+2. Ajuste as variáveis conforme necessário:
 
-**Integração APIBrasil (opcional):**
+| Variável                        | Descrição                                                 | Padrão                       |
+| ------------------------------- | --------------------------------------------------------- | ---------------------------- |
+| `PLACAOCR_MODEL_PATH`           | Caminho para o peso YOLO (`.pt`)                          | `artifacts/license-plate.pt` |
+| `PLACAOCR_CONFIDENCE_THRESHOLD` | Confiança mínima de detecção                              | `0.25`                       |
+| `PLACAOCR_DEVICE`               | Dispositivo de execução (`cpu`, `cuda:0`, etc.)           | `cpu`                        |
+| `PLACAOCR_IMAGE_SIZE`           | Tamanho da imagem na inferência (None = padrão do modelo) | `640`                        |
 
-| Variavel | Descricao | Padrao |
-| --- | --- | --- |
-| `PLACAOCR_APIBRASIL_BASE_URL` | Endpoint do recurso de consulta | `https://gateway.apibrasil.io/api/v2/vehicles/base/001/consulta` |
-| `PLACAOCR_APIBRASIL_TOKEN` | Token/Bearer utilizado pela APIBrasil | *(vazio)* |
-| `PLACAOCR_APIBRASIL_TIMEOUT` | Timeout da chamada em segundos | `15` |
+### Integração com APIBrasil (opcional)
 
-## 2. Instalar dependencias e preparar dataset
+| Variável                      | Descrição                 | Padrão                                                           |
+| ----------------------------- | ------------------------- | ---------------------------------------------------------------- |
+| `PLACAOCR_APIBRASIL_BASE_URL` | Endpoint da consulta      | `https://gateway.apibrasil.io/api/v2/vehicles/base/001/consulta` |
+| `PLACAOCR_APIBRASIL_TOKEN`    | Token de acesso           | *(vazio)*                                                        |
+| `PLACAOCR_APIBRASIL_TIMEOUT`  | Timeout da requisição (s) | `15`                                                             |
 
-Execute o script de inicializacao na raiz do projeto:
+---
+
+## 📦 2. Instalação de Dependências e Dataset
+
+Execute o script de inicialização:
 
 ```bash
 ./init.sh
 ```
 
-O que o script faz:
-- cria (ou reutiliza) o virtualenv em `.venv`;
-- instala `requirements.txt` com `pip` atualizado;
-- baixa o dataset Artificial Mercosur License Plates (~1.52 GB) via `curl` ou `wget`;
-- extrai o zip e gera um split `train/val/test` deterministico (seed 42);
-- gera o arquivo YAML para o Ultralytics em `data/yolo/mercosur-license-plates.yaml`;
-- executa um treino inicial com YOLOv8 (`yolov8n.pt`, 1 epoch por padrao) e salva o melhor peso em `artifacts/license-plate.pt`;
-- armazena os runs completos em `artifacts/runs/`.
+O script realiza:
 
-Flags uteis:
-- `./init.sh --skip-training`: prepara tudo exceto o treino (mantem pesos existentes).
-- `./init.sh --force-download`: rebaixa e reextrai o dataset (descarta arquivos anteriores).
+* Criação/reuso do virtualenv em `.venv`;
+* Instalação de dependências (`requirements.txt`);
+* Download do dataset Artificial Mercosur License Plates (\~1.52 GB);
+* Extração e divisão em `train/val/test` (seed 42);
+* Geração do YAML em `data/yolo/mercosur-license-plates.yaml`;
+* Treino inicial do YOLOv8 (1 epoch por padrão);
+* Salvamento do peso em `artifacts/license-plate.pt`;
+* Armazenamento dos runs em `artifacts/runs/`.
 
-Variaveis de ambiente para ajuste rapido:
+### Flags úteis
 
-| Variavel | Funcao | Valor padrao |
-| --- | --- | --- |
-| `TRAIN_EPOCHS` | Numero de epocas no treino inicial | `1` |
-| `TRAIN_BATCH` | Tamanho do batch por step | `16` |
-| `BASE_MODEL` | Checkpoint YOLO base (qualquer compativel com Ultralytics) | `yolov8n.pt` |
-| `TRAIN_IMAGE_SIZE` | Resolucao usada no treino | `640` |
-| `MODEL_OUTPUT_NAME` | Nome do arquivo de saida em `artifacts/` | `license-plate.pt` |
+* `./init.sh --skip-training`: prepara sem treinar (mantém pesos);
+* `./init.sh --force-download`: rebaixa e reextrai dataset.
 
-## 3. Executar a API
+### Variáveis de ambiente de treino
 
-Depois que o ambiente estiver configurado e o peso disponivel:
+| Variável            | Função              | Padrão             |
+| ------------------- | ------------------- | ------------------ |
+| `TRAIN_EPOCHS`      | Nº de épocas        | `1`                |
+| `TRAIN_BATCH`       | Tamanho do batch    | `16`               |
+| `BASE_MODEL`        | Modelo YOLO base    | `yolov8n.pt`       |
+| `TRAIN_IMAGE_SIZE`  | Resolução de treino | `640`              |
+| `MODEL_OUTPUT_NAME` | Nome do peso final  | `license-plate.pt` |
+
+---
+
+## 🚀 3. Executando a API
+
+Após configurar o ambiente e treinar/baixar pesos:
 
 ```bash
-./start.sh --dev   # uvicorn com reload
-./start.sh --prod  # uvicorn multiprocess (sem reload)
+./start.sh --dev   # modo dev (reload ativo)
+./start.sh --prod  # modo prod (multiprocess)
 ```
 
-Por padrao o servidor sobe em `http://0.0.0.0:8000`. A documentacao Swagger fica em `http://localhost:8000/docs` e o Redoc em `http://localhost:8000/redoc`.
+* API disponível em: [http://0.0.0.0:8000](http://0.0.0.0:8000)
+* Swagger: [http://localhost:8000/docs](http://localhost:8000/docs)
+* Redoc: [http://localhost:8000/redoc](http://localhost:8000/redoc)
 
-## 4. REST client
+---
 
-Resposta esperada:
+## 📡 4. Exemplo de Resposta (REST)
 
 ```json
 {
@@ -96,9 +110,29 @@ Resposta esperada:
 }
 ```
 
-## 5. Integracao com APIBrasil
+---
 
-- Configure `PLACAOCR_APIBRASIL_TOKEN` (e demais variaveis) para habilitar a chamada.
-- A API envia `tipo`, `placa` (derivada da imagem ou do campo `placa_manual`) e `homolog`.
-- Se `homolog=true` e nenhuma placa for detectada, o sistema utiliza `ABC1234` para recuperar o payload de exemplo.
-- O retorno completo da APIBrasil e anexado em `data[].veiculo.detalhes`.
+## 🔗 5. Integração com APIBrasil
+
+1. Configure `PLACAOCR_APIBRASIL_TOKEN` e demais variáveis.
+
+2. A API envia:
+
+   * `tipo`
+   * `placa` (detectada ou manual via `placa_manual`)
+   * `homolog` (modo de homologação)
+
+3. Caso `homolog=true` e **nenhuma placa seja detectada**, será usada `ABC1234` para retorno de exemplo.
+
+4. O payload completo da APIBrasil é anexado em `data[].veiculo.detalhes`.
+
+---
+
+## 📌 Resumo
+
+* Treine ou use pesos prontos de YOLO para detecção de placas Mercosul;
+* Use `init.sh` para preparar o ambiente/dataset;
+* Rode a API com `start.sh`;
+* Integre facilmente com APIBrasil para consulta de veículos.
+
+---
