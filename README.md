@@ -1,7 +1,6 @@
-﻿Aqui está um novo README em **Markdown**, reorganizado e formatado para facilitar leitura e integração:
+# Placa OCR API
 
-````markdown
-# 📷 Placa OCR API
+<img width="1535" height="875" alt="{F40DF6EC-CEFD-421C-BC07-5138CD33C638}" src="https://github.com/user-attachments/assets/8b153aac-6cda-4887-8b44-df94d7ee3058" />
 
 API para **detecção e OCR de placas Mercosul**, com suporte opcional de integração à **APIBrasil**.
 
