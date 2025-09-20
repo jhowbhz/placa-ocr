@@ -6,10 +6,10 @@ API para **detecção e OCR de placas Mercosul**, com suporte opcional de integr
 
 ---
 
-## ⚙️ 1. Configuração de Ambiente
+## 1. Configuração de Ambiente
 
 1. Copie o arquivo de exemplo:
-   ```bash
+```bash
    cp .env-example .env
 ````
 
@@ -32,7 +32,7 @@ API para **detecção e OCR de placas Mercosul**, com suporte opcional de integr
 
 ---
 
-## 📦 2. Instalação de Dependências e Dataset
+## 2. Instalação de Dependências e Dataset
 
 Execute o script de inicialização:
 
@@ -68,7 +68,7 @@ O script realiza:
 
 ---
 
-## 🚀 3. Executando a API
+## 3. Executando a API
 
 Após configurar o ambiente e treinar/baixar pesos:
 
@@ -83,7 +83,7 @@ Após configurar o ambiente e treinar/baixar pesos:
 
 ---
 
-## 📡 4. Exemplo de Resposta (REST)
+## 4. Exemplo de Resposta (REST)
 
 ```json
 {
@@ -111,7 +111,7 @@ Após configurar o ambiente e treinar/baixar pesos:
 
 ---
 
-## 🔗 5. Integração com APIBrasil
+## 5. Integração com APIBrasil
 
 1. Configure `PLACAOCR_APIBRASIL_TOKEN` e demais variáveis.
 
@@ -127,7 +127,7 @@ Após configurar o ambiente e treinar/baixar pesos:
 
 ---
 
-## 📌 Resumo
+## Resumo
 
 * Treine ou use pesos prontos de YOLO para detecção de placas Mercosul;
 * Use `init.sh` para preparar o ambiente/dataset;
