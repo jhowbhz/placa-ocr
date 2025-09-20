@@ -3,15 +3,7 @@
 
 API FastAPI para deteccao de placas Mercosul. O repositorio inclui script de inicializacao completa (`init.sh`), utilitarios para subir a API (`start.sh`) e configuracoes prontas para treino utilizando o dataset **Artificial Mercosur License Plates** (CC BY 4.0).
 
-## 2. Requisitos
-
-- Python 3.10 ou superior (com `venv` habilitado)
-- Git Bash, WSL ou outro shell POSIX para executar scripts `.sh` no Windows
-- `curl` ou `wget` para baixar o dataset
-- Espaco em disco: ~6 GB (dataset compactado + imagens extraidas + artefatos de treino)
-- GPU opcional (CUDA) para treinos mais rapidos
-
-## 4. Configuracao de ambiente
+## 1. Configuracao de ambiente
 
 1. Copie o exemplo de variaveis:
    ```bash
@@ -34,7 +26,7 @@ API FastAPI para deteccao de placas Mercosul. O repositorio inclui script de ini
 | `PLACAOCR_APIBRASIL_TOKEN` | Token/Bearer utilizado pela APIBrasil | *(vazio)* |
 | `PLACAOCR_APIBRASIL_TIMEOUT` | Timeout da chamada em segundos | `15` |
 
-## 5. Instalar dependencias e preparar dataset
+## 2. Instalar dependencias e preparar dataset
 
 Execute o script de inicializacao na raiz do projeto:
 
@@ -65,9 +57,7 @@ Variaveis de ambiente para ajuste rapido:
 | `TRAIN_IMAGE_SIZE` | Resolucao usada no treino | `640` |
 | `MODEL_OUTPUT_NAME` | Nome do arquivo de saida em `artifacts/` | `license-plate.pt` |
 
-> **Observacao:** o dataset possui licenca CC BY 4.0. Consulte [Mendeley Data](https://data.mendeley.com/datasets/nx9xbs4rgx/2) para detalhes.
-
-## 6. Executar a API
+## 3. Executar a API
 
 Depois que o ambiente estiver configurado e o peso disponivel:
 
@@ -78,15 +68,7 @@ Depois que o ambiente estiver configurado e o peso disponivel:
 
 Por padrao o servidor sobe em `http://0.0.0.0:8000`. A documentacao Swagger fica em `http://localhost:8000/docs` e o Redoc em `http://localhost:8000/redoc`.
 
-## 7. Testar com Postman / REST client
-
-- Importe `docs/postman.json` no Postman.
-- Defina a variavel `baseUrl` (padrao `http://localhost:8000`).
-- Na requisicao `Detect License Plates` envie:
-  - campo `file` com a imagem (`multipart/form-data`),
-  - campo `tipo` (ex.: `agregados-basica`),
-  - campo `homolog` (`true` para modo sandbox da APIBrasil),
-  - opcional `placa_manual` caso queira forcar a placa utilizada na consulta externa.
+## 4. REST client
 
 Resposta esperada:
 
@@ -114,7 +96,7 @@ Resposta esperada:
 }
 ```
 
-## 8. Integracao com APIBrasil
+## 5. Integracao com APIBrasil
 
 - Configure `PLACAOCR_APIBRASIL_TOKEN` (e demais variaveis) para habilitar a chamada.
 - A API envia `tipo`, `placa` (derivada da imagem ou do campo `placa_manual`) e `homolog`.
