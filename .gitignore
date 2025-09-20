@@ -4,3 +4,4 @@ __pycache__
 *.pyc
 data/
 artifacts/runs/
+yolov8s.pt

@@ -1,0 +1,17 @@
+.git
+.vscode
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.venv
+.env
+.env-example
+build/
+dist/
+artifacts/runs
+artifacts/**/*.jpg
+artifacts/**/*.png
+data/
+notebooks/
+*.log

@@ -25,6 +25,7 @@ class DetectionData(BaseModel):
 class DetectionResponse(BaseModel):
     placa: str = ""
     data: List[DetectionData] = Field(default_factory=list)
+    debug: Optional[Dict[str, Any]] = None
 
     @classmethod
     def from_detections(
@@ -32,6 +33,7 @@ class DetectionResponse(BaseModel):
         detections: List[Dict[str, float]],
         placa: str = "",
         vehicle_data: Optional[Dict[str, Any]] = None,
+        debug: Optional[Dict[str, Any]] = None,
     ) -> "DetectionResponse":
         vehicle_info = VehicleInfo()
         if vehicle_data:
@@ -41,7 +43,7 @@ class DetectionResponse(BaseModel):
                 detalhes=vehicle_data,
             )
         items = [DetectionData(resumo=DetectionResumo(**item), veiculo=vehicle_info) for item in detections]
-        return cls(placa=placa or "", data=items)
+        return cls(placa=placa or "", data=items, debug=debug)
 
 
 def _extract_field(payload: Any, keys: List[str]) -> str:

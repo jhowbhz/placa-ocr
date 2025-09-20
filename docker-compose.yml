@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+    image: placa-ocr-api
+    container_name: placa-ocr-api
+    env_file:
+      - ${ENV_FILE:-.env}
+    environment:
+      HOST: ${HOST:-0.0.0.0}
+      PORT: ${PORT:-8000}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      WORKERS: ${WORKERS:-1}
+    ports:
+      - "${PORT:-8000}:8000"
+    command: ["server"]
+    restart: unless-stopped
+    profiles:
+      - prod
+
+  api-dev:
+    build:
+      context: .
+    image: placa-ocr-api
+    container_name: placa-ocr-api-dev
+    env_file:
+      - ${ENV_FILE:-.env}
+    environment:
+      HOST: ${HOST:-0.0.0.0}
+      PORT: ${PORT:-8000}
+      LOG_LEVEL: ${LOG_LEVEL:-debug}
+      UVICORN_RELOAD: "1"
+    ports:
+      - "${PORT:-8000}:8000"
+    volumes:
+      - .:/app
+    command: ["dev"]
+    profiles:
+      - dev

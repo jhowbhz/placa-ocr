@@ -17,6 +17,8 @@ class Settings(BaseSettings):
     apibrasil_token: Optional[str] = None
     apibrasil_timeout: float = 15.0
 
+    debug: bool = False
+
 
 @lru_cache
 def get_settings() -> Settings:
