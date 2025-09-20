@@ -1,5 +1,5 @@
 ﻿# Placa OCR API
-<img width="1624" height="868" alt="{C9194544-F3E1-4EB8-8FF6-EA1AA7A85BF3}" src="https://github.com/user-attachments/assets/26f36790-f47b-4417-97e4-097f4ef3cbcd" />
+<img width="1535" height="875" alt="{F40DF6EC-CEFD-421C-BC07-5138CD33C638}" src="https://github.com/user-attachments/assets/8b153aac-6cda-4887-8b44-df94d7ee3058" />
 
 API FastAPI para deteccao de placas Mercosul. O repositorio inclui script de inicializacao completa (`init.sh`), utilitarios para subir a API (`start.sh`) e configuracoes prontas para treino utilizando o dataset **Artificial Mercosur License Plates** (CC BY 4.0).
 
